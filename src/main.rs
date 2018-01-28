@@ -11,6 +11,16 @@ mod logger;
 
 use stdweb::web;
 
+fn draw(ref ctx: stdweb::Value) {
+    js! {
+        @{ctx}.fillStyle = "rgb("
+            + Math.floor(256 * Math.random()) + ", "
+            + Math.floor(256 * Math.random()) + ", "
+            + Math.floor(256 * Math.random()) + ")";
+        @{ctx}.fillRect(0, 0, @{ctx}.canvas.width, @{ctx}.canvas.height);
+    }
+}
+
 fn main() {
     logger::init().expect("failed to initialize logger");
     stdweb::initialize();
@@ -23,11 +33,13 @@ fn main() {
     let ref ctx = js! { return @{canvas}.getContext("2d"); };
 
     js! {
-        @{ctx}.fillStyle = "rgb("
-            + Math.floor(256 * Math.random()) + ", "
-            + Math.floor(256 * Math.random()) + ", "
-            + Math.floor(256 * Math.random()) + ")";
-        @{ctx}.fillRect(0, 0, @{canvas}.width, @{canvas}.height);
+        const resize = () => {
+            @{canvas}.width = window.innerWidth;
+            @{canvas}.height = window.innerHeight;
+            @{draw}(@{ctx});
+        };
+        window.addEventListener("resize", resize);
+        resize();
     };
 
     stdweb::event_loop();
