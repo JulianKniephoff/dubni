@@ -1,4 +1,5 @@
 #![recursion_limit = "1024"]
+#![feature(use_nested_groups)]
 
 
 #[macro_use]
@@ -7,8 +8,14 @@ extern crate stdweb;
 extern crate log;
 
 
-use stdweb::web;
-use stdweb::unstable::TryInto;
+use stdweb::{
+    web::{
+        self,
+        IEventTarget,
+        event::KeyupEvent,
+    },
+    unstable::TryInto,
+};
 
 
 mod logger;
@@ -52,6 +59,8 @@ fn main() {
 
     let current_time: f64 = js! { return window.performance.now(); }.try_into().unwrap();
     main_loop(ctx, current_time);
+
+    web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
 
     stdweb::event_loop();
 }
