@@ -1,15 +1,18 @@
 #![recursion_limit = "1024"]
 
+
 #[macro_use]
 extern crate stdweb;
 #[macro_use]
 extern crate log;
 
 
+use stdweb::web;
+use stdweb::unstable::TryInto;
+
+
 mod logger;
 
-
-use stdweb::web;
 
 fn draw(ref ctx: stdweb::Value) {
     js! {
