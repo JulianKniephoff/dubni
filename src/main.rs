@@ -24,6 +24,11 @@ fn draw(ref ctx: stdweb::Value) {
     }
 }
 
+fn main_loop(ctx: stdweb::Value, _t: f64) {
+    draw(ctx.clone());
+    web::window().request_animation_frame(|t| main_loop(ctx, t));
+}
+
 fn main() {
     logger::init().expect("failed to initialize logger");
     stdweb::initialize();
@@ -33,17 +38,20 @@ fn main() {
     info!("Logger and stdweb initialized");
 
     let ref canvas = web::document().get_element_by_id("screen").unwrap();
-    let ref ctx = js! { return @{canvas}.getContext("2d"); };
+    let ctx = js! { return @{canvas}.getContext("2d"); };
 
     js! {
         const resize = () => {
             @{canvas}.width = window.innerWidth;
             @{canvas}.height = window.innerHeight;
-            @{draw}(@{ctx});
+            @{draw}(@{ctx.clone()});
         };
         window.addEventListener("resize", resize);
         resize();
     };
+
+    let current_time: f64 = js! { return window.performance.now(); }.try_into().unwrap();
+    main_loop(ctx, current_time);
 
     stdweb::event_loop();
 }
