@@ -3,11 +3,12 @@
 
 
 #[macro_use]
-extern crate stdweb;
-#[macro_use]
 extern crate log;
+#[macro_use]
+extern crate stdweb;
 
 
+use std::rc::Rc;
 use stdweb::{
     web::{
         self,
@@ -17,23 +18,20 @@ use stdweb::{
     unstable::TryInto,
 };
 
+use rendering::{Color, Renderer};
+
 
 mod logger;
+mod rendering;
 
 
-fn draw(ref ctx: stdweb::Value) {
-    js! {
-        @{ctx}.fillStyle = "rgb("
-            + Math.floor(256 * Math.random()) + ", "
-            + Math.floor(256 * Math.random()) + ", "
-            + Math.floor(256 * Math.random()) + ")";
-        @{ctx}.fillRect(0, 0, @{ctx}.canvas.width, @{ctx}.canvas.height);
-    }
-}
-
-fn main_loop(ctx: stdweb::Value, _t: f64) {
-    draw(ctx.clone());
-    web::window().request_animation_frame(|t| main_loop(ctx, t));
+fn main_loop(renderer: Rc<Renderer>, _t: f64) {
+    renderer.clear(Color {
+        r: js! { return Math.random() }.try_into().unwrap(),
+        g: js! { return Math.random() }.try_into().unwrap(),
+        b: js! { return Math.random() }.try_into().unwrap(),
+    });
+    web::window().request_animation_frame(|t| main_loop(renderer, t));
 }
 
 fn main() {
@@ -44,21 +42,23 @@ fn main() {
     // a warning.
     info!("Logger and stdweb initialized");
 
-    let ref canvas = web::document().get_element_by_id("screen").unwrap();
-    let ctx = js! { return @{canvas}.getContext("2d"); };
+    let canvas = web::document().get_element_by_id("screen").unwrap();
+    let renderer = Rc::new(Renderer::init(canvas));
 
+    let resize = {
+        let renderer = renderer.clone();
+        move || renderer.resize(
+            js! { return window.innerWidth; }.try_into().unwrap(),
+            js! { return window.innerHeight; }.try_into().unwrap(),
+        )
+    };
+    resize();
     js! {
-        const resize = () => {
-            @{canvas}.width = window.innerWidth;
-            @{canvas}.height = window.innerHeight;
-            @{draw}(@{ctx.clone()});
-        };
-        window.addEventListener("resize", resize);
-        resize();
+        window.addEventListener("resize", () => @{resize()});
     };
 
     let current_time: f64 = js! { return window.performance.now(); }.try_into().unwrap();
-    main_loop(ctx, current_time);
+    main_loop(renderer, current_time);
 
     web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
 
