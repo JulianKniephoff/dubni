@@ -3,6 +3,18 @@ dubni
 
 A browser game written in Rust.
 
+Etymology (or "what the hell is dubni?")
+----------------------------------------
+
+Unfortunately there is no deep lore to it. It is just the result of trying
+to write "dunno" (short for "don't know") on a mobile phone while on the move.
+:wink:
+
+Oh, and apparently dubnium (Db) is a highly radioactive synthetic
+chemical element, and there might be some metaphor hiding in there.
+Dubnium, in turn, is named after its place of discovery,
+the Russian town of Dubna.
+
 Building
 --------
 
