@@ -1,5 +1,4 @@
 #![recursion_limit = "1024"]
-#![feature(use_nested_groups)]
 
 
 #[macro_use]
