@@ -6,6 +6,9 @@ extern crate log;
 #[macro_use]
 extern crate stdweb;
 
+mod logger;
+mod rendering;
+
 
 use std::rc::Rc;
 use stdweb::{
@@ -19,19 +22,6 @@ use stdweb::{
 
 use rendering::{Color, Renderer};
 
-
-mod logger;
-mod rendering;
-
-
-fn main_loop(renderer: Rc<Renderer>, _t: f64) {
-    renderer.clear(Color {
-        r: js! { return Math.random() }.try_into().unwrap(),
-        g: js! { return Math.random() }.try_into().unwrap(),
-        b: js! { return Math.random() }.try_into().unwrap(),
-    });
-    web::window().request_animation_frame(|t| main_loop(renderer, t));
-}
 
 fn main() {
     logger::init().expect("failed to initialize logger");
@@ -60,4 +50,13 @@ fn main() {
     main_loop(renderer, current_time);
 
     web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
+}
+
+fn main_loop(renderer: Rc<Renderer>, _t: f64) {
+    renderer.clear(Color {
+        r: js! { return Math.random() }.try_into().unwrap(),
+        g: js! { return Math.random() }.try_into().unwrap(),
+        b: js! { return Math.random() }.try_into().unwrap(),
+    });
+    web::window().request_animation_frame(|t| main_loop(renderer, t));
 }
