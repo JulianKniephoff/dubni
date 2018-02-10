@@ -46,7 +46,9 @@ fn main() {
         window.addEventListener("resize", () => @{resize()});
     };
 
-    let current_time: f64 = js! { return window.performance.now(); }.try_into().unwrap();
+    let current_time: f64 = js! {
+        return window.performance.now();
+    }.try_into().unwrap();
     main_loop(renderer, current_time);
 
     web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
