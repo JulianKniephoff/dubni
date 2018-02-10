@@ -61,6 +61,4 @@ fn main() {
     main_loop(renderer, current_time);
 
     web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
-
-    stdweb::event_loop();
 }
