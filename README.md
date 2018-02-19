@@ -3,6 +3,13 @@ dubni
 
 A browser game written in Rust.
 
+You can (hopefully) see it in action [here](https://juliankniephoff.github.io/dubni/).
+
+**TRIGGER WARNING:** Since we are still in an experimental phase,
+that link might contain any kind of trigger for everything whatsoever,
+be it simple butthurt or serious illnesses!
+It might also impregnate your kittens.
+
 Etymology (or "what the hell is dubni?")
 ----------------------------------------
 
