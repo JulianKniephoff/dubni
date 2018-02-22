@@ -15,7 +15,8 @@ use stdweb::{
     web::{
         self,
         IEventTarget,
-        event::KeyupEvent,
+        INonElementParentNode,
+        event::KeyUpEvent,
     },
     unstable::TryInto,
 };
@@ -51,7 +52,7 @@ fn main() {
     }.try_into().unwrap();
     main_loop(renderer, current_time);
 
-    web::document().add_event_listener(|e: KeyupEvent| info!("{:?}", e));
+    web::document().add_event_listener(|e: KeyUpEvent| info!("{:?}", e));
 }
 
 fn main_loop(renderer: Rc<Renderer>, _t: f64) {

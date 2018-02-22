@@ -7,5 +7,5 @@ authors = [
 ]
 
 [dependencies]
-stdweb = "0.3"
+stdweb = "0.4"
 log = "0.4"
