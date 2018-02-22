@@ -1,19 +1,19 @@
 mod color;
 
 
-use stdweb::{self, web};
+use stdweb::{self, web::html_element::CanvasElement};
 
 pub use self::color::Color;
 
 
 pub struct Renderer {
-    canvas: web::Element,
+    canvas: CanvasElement,
     gl: stdweb::Value,
 }
 
 impl Renderer {
 
-    pub fn init(canvas: web::Element) -> Self {
+    pub fn init(canvas: CanvasElement) -> Self {
         let gl = js! {
             return @{&canvas}.getContext("webgl");
         };

@@ -33,7 +33,7 @@ fn main() {
     info!("Logger and stdweb initialized");
 
     let canvas = web::document().get_element_by_id("screen").unwrap();
-    let renderer = Rc::new(Renderer::init(canvas));
+    let renderer = Rc::new(Renderer::init(canvas.try_into().unwrap()));
 
     let resize = {
         let renderer = renderer.clone();
