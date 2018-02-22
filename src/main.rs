@@ -38,8 +38,8 @@ fn main() {
     let resize = {
         let renderer = renderer.clone();
         move || renderer.resize(
-            js! { return window.innerWidth; }.try_into().unwrap(),
-            js! { return window.innerHeight; }.try_into().unwrap(),
+            web::window().inner_width() as u32,
+            web::window().inner_height() as u32,
         )
     };
     resize();
