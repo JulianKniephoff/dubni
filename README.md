@@ -41,7 +41,7 @@ which you can get by running
 
 and with that done, you should be able to play the game by executing
 
-    cargo web start --target=wasm32-unknown-unknown
+    cargo web start --auto-reload --target=wasm32-unknown-unknown
 
 and pointing your browser to [`http://localhost:8000`](http://localhost:8000).
 
