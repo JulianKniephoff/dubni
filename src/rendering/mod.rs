@@ -23,9 +23,9 @@ impl Renderer {
     pub fn resize(&self, width: u32, height: u32) {
         let gl = &self.gl;
         let canvas = &self.canvas;
+        canvas.set_width(width);
+        canvas.set_height(height);
         js! {
-            @{canvas}.width = @{width};
-            @{canvas}.height = @{height};
             @{gl}.viewport(0, 0, @{canvas}.width, @{canvas}.height);
         }
     }
